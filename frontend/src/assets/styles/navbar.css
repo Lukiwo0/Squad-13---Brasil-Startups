@@ -1,0 +1,28 @@
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--cor-branca);
+  box-shadow: 0px 1px 10px var(--cor-cinza);
+}
+
+.nav-btn {
+  width: 100%;
+  background: none;
+  color: var(--cor-cinza);
+  border: none;
+  font-size: 1.7rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 15px 16px;
+  transition: 0.2s;
+  border-bottom: 5px solid var(--cor-cinza);
+}
+
+.nav-btn:hover {
+  color: var(--cor-cinza-escuro);
+}
+
+.nav-btn.ativo {
+  color: var(--cor-azul);
+  border-bottom: 5px solid var(--cor-azul);
+}

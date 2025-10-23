@@ -1,0 +1,190 @@
+/* =========================
+   FILTROS
+========================= */
+.filtros-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 1.5rem 3rem 1.5rem;
+  padding: 0 1rem;
+}
+
+.filtros-container input {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: 3px solid var(--cor-cinza-claro);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--cor-cinza);
+  box-shadow: 0px 2px 2px rgb(128, 128, 128, 0.6);
+}
+
+.filtros-container select {
+  padding: 0.6rem 1rem;
+  border: 3px solid var(--cor-cinza-claro);
+  border-radius: 8px;
+  background: white;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0px 2px 2px rgb(128, 128, 128, 0.6);
+}
+
+/* =========================
+   CARDS DE EVENTO
+========================= */
+.eventos-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 50px 30px;
+  margin-top: 20px;
+}
+
+.evento-card {
+  background-color: var(--cor-branca);
+  border: 1px solid var(--cor-cinza);
+  border-radius: 12px;
+  padding: 16px;
+  border: 3px solid var(--cor-cinza-claro);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 7px 7px rgb(128, 128, 128, 0.6);
+}
+
+.evento-card h2 {
+  margin: 0 0 10px 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botões de status */
+.status-btn {
+  color: var(--cor-branca);
+  border: none;
+  border-radius: 6px;
+  padding: 9px 15px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  cursor: default;
+}
+
+/* Cores por status */
+.status-azul { background-color: var(--cor-azul); }   /* Em andamento */
+.status-azul-escuro { background-color: var(--cor-azul-escuro); } /* Agendado */
+.status-cinza { background-color: var(--cor-cinza); } /* Encerrado */
+
+.evento-card p {
+  margin: 5px 0px;
+}
+
+/* Descrição com line-clamp */
+.descricao {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Botão Ler Mais */
+.ler-mais-btn {
+  display: block;        
+  margin: 20px auto 0; 
+  background-color: var(--cor-cinza-escuro);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--cor-branca);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 30px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.ler-mais-btn:hover {
+  background-color: var(--cor-cinza-claro);
+  color: var(--cor-texto);
+}
+
+
+/* =========================
+   POPUP
+========================= */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.popup-content {
+  background-color: var(--cor-branca);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 600px;
+  width: 90%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.fechar-btn {
+  background-color: var(--cor-azul);
+  color: var(--cor-branca);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+/* =========================
+   PAGINAÇÃO
+========================= */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.page-btn {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: filter 0.2s;
+}
+
+.page-btn:hover { filter: brightness(0.97); }
+
+.page-btn.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  font-weight: 600;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dots {
+  padding: 0 0.3rem;
+  color: var(--cor-texto, #222);
+}
