@@ -9,34 +9,29 @@ import { getEventData, scrapeWithLimit } from './scraper/symplaScraper.js'
 
 async function scrapeSympla() {
   const db = await connectDB()
-  let total = 0
+  const limitLinks = 5000, limitPages = 100
 
   console.log('🚀 Iniciando scraping do Sympla...')
 
-  const links = await scrapeWithLimit(process.env.BASE_URL)
-  console.log(links)
+  const events = await scrapeWithLimit(process.env.BASE_URL, limitLinks, limitPages)
 
-  for (const link of links) {
-    const data = await getEventData(link)
-    if (data) {
-      const result = await saveEvent(db, data)
+  for (const event of events) {
+    const result = await saveEvent(db, event)
 
-      if (result === 'salvo-primeira-vez') {
-        console.log(`🎉 Salvo pela primeira vez: ${data.titulo}`)
-      } else if (result === 'atualizado') {
-        console.log(`🔄 Evento atualizado: ${data.titulo}`)
-      } else if (result === 'ja-salvo-mas-sem-atualizacao') {
-        console.log(`ℹ️ Já salvo, sem atualização: ${data.titulo}`)
-      }
-
-      total++
+    if (result === 'salvo-primeira-vez') {
+      console.log(`🎉 Salvo pela primeira vez: ${event.name}`)
+    } else if (result === 'atualizado') {
+      console.log(`🔄 Evento atualizado: ${event.name}`)
+    } else if (result === 'ja-salvo-mas-sem-atualizacao') {
+      console.log(`ℹ️ Já salvo, sem atualização: ${event.name}`)
     }
+
   }
 
-  console.log(`✅ Scraping concluído. Total processado: ${total} eventos.`)
+  console.log(`✅ Scraping concluído. Total processado: ${events.length} eventos.`)
 }
 
-// Executa uma vez ao iniciar (útil pra demo/teste)
+// Executa uma vez ao iniciar
 scrapeSympla()
 
 // Agenda pra rodar todo dia às 04:00 da manhã

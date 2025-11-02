@@ -12,22 +12,22 @@
 
 .filtros-container input {
   flex: 1;
-  padding: 0.6rem 1rem;
-  border: 3px solid var(--cor-cinza-claro);
-  border-radius: 8px;
-  font-size: 1rem;
   color: var(--cor-cinza);
-  box-shadow: 0px 2px 2px rgb(128, 128, 128, 0.6);
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .filtros-container select {
-  padding: 0.6rem 1rem;
-  border: 3px solid var(--cor-cinza-claro);
-  border-radius: 8px;
   background: white;
+  padding: 0.6rem 1rem;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0px 2px 2px rgb(128, 128, 128, 0.6);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 /* =========================
@@ -42,13 +42,17 @@
 
 .evento-card {
   background-color: var(--cor-branca);
-  border: 1px solid var(--cor-cinza);
-  border-radius: 12px;
   padding: 16px;
-  border: 3px solid var(--cor-cinza-claro);
   position: relative;
   overflow: hidden;
-  box-shadow: 0px 7px 7px rgb(128, 128, 128, 0.6);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.evento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
 .evento-card h2 {
@@ -170,12 +174,15 @@
   transition: filter 0.2s;
 }
 
-.page-btn:hover { filter: brightness(0.97); }
+.page-btn:hover:not(.active) {
+  border-color: var(--cor-azul);
+  color: var(--cor-azul);
+}
 
 .page-btn.active {
-  background-color: #007bff;
+  background-color: var(--cor-azul);
   color: white;
-  border-color: #007bff;
+  border-color: var(--cor-azul);
   font-weight: 600;
 }
 
