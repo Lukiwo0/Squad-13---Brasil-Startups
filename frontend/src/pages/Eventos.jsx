@@ -6,77 +6,83 @@ export default function Eventos() {
   const [filtroStatus, setFiltroStatus] = useState('Todos')
   const [eventoSelecionado, setEventoSelecionado] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [ordem, setOrdem] = useState('Mais recente') // 'Mais recente' ou 'Mais antigo'
+  const [ordem, setOrdem] = useState('Mais recente')
+  const [mostrarFiltrosAvancados, setMostrarFiltrosAvancados] = useState(false)
+  const [filtrosAvancados, setFiltrosAvancados] = useState({
+    dataEspecifica: '',
+    dataInicio: '',
+    dataFim: '',
+    cidade: '',
+    estado: '',
+    pais: '',
+    tipoPagamento: 'Todos'
+  })
+
   const eventsPerPage = 20
 
-  // Eventos de exemplo
+  // Função para determinar o status baseado nas datas
+  const getStatus = (event) => {
+    const hoje = new Date()
+    const startDate = new Date(event.startDate)
+    const endDate = new Date(event.endDate)
+
+    if (hoje < startDate) return 'Agendado'
+    if (hoje >= startDate && hoje <= endDate) return 'Em andamento'
+    return 'Encerrado'
+  }
+
+  // Eventos de exemplo com nova estrutura
   const eventos = useMemo(() => [
     {
       id: 1,
-      titulo: 'Inova Brasília 2025',
-      status: 'Em andamento',
-      organizador: 'UCB, SECTI-DF, JBS, Cargill, Agrit...',
-      horario: '13h às 19h',
-      dataInicio: '20/09/2025',
-      dataFim: '23/09/2025',
-      local: 'UCB - Universidade Católica de Brasília',
-      endereco: 'QS 07, Lote 01, Taguatinga Sul - Taguatinga, Brasília - DF, 71966-700',
-      descricao: 'Evento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.',
-      link: 'https://www.ucb.br/eventos/inovabrasilia2025',
-    },
-    {
-      id: 101,
-      titulo: 'Testando o tamanho do titulo pra ver se fica ruim',
-      status: 'Em andamento',
-      organizador: 'UCB, SECTI-DF, JBS, Cargill, Agrit...',
-      horario: '13h às 19h',
-      dataInicio: '20/10/2025',
-      dataFim: '23/10/2025',
-      local: 'UCB - Universidade Católica de Brasília',
-      endereco: 'QS 07, Lote 01, Taguatinga Sul - Taguatinga, Brasília - DF, 71966-700',
-      descricao: 'Evento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.',
-      link: 'https://www.ucb.br/eventos/inovabrasilia2025',
-    },
-    {
-      id: 2,
-      titulo: 'Tech Summit Goiânia',
-      status: 'Agendado',
-      organizador: 'Prefeitura de Goiânia, Sebrae, IFG',
-      horario: '09h às 18h',
-      dataInicio: '05/11/2025',
-      dataFim: '07/11/2025',
-      local: 'Centro de Convenções de Goiânia',
-      endereco: 'Rua 4, nº 1400 - Setor Central, Goiânia - GO, 74020-060',
-      descricao: 'Conferência regional sobre inovação, startups e empreendedorismo tecnológico. Evento voltado para profissionais e estudantes interessados em networking e troca de conhecimento sobre o ecossistema de inovação do Centro-Oeste.',
-      link: 'https://techsummitgoiania.com.br',
-    },
-    {
-      id: 3,
-      titulo: 'Hackathon Cerrado Tech',
-      status: 'Encerrado',
-      organizador: 'SENAI Goiás, UFG, GynTech',
-      horario: '08h às 20h',
-      dataInicio: '15/07/2025',
-      dataFim: '17/07/2025',
-      local: 'Parque Tecnológico Samambaia - Goiânia',
-      endereco: 'Av. Esperança, s/n, Campus Samambaia - Goiânia, GO',
-      descricao: 'Hackathon que reuniu programadores, designers e empreendedores para criar soluções inovadoras em tecnologia sustentável. Foram 48h de imersão e pitch final com investidores regionais.',
-      link: 'https://cerradotechhackathon.com.br',
+      name: 'Inova Brasília 2025',
+      newUrl: 'https://www.ucb.br/eventos/inovabrasilia2025',
+      startDate: '2025-11-02',
+      endDate: '2025-11-05',
+      eventsCategory: { name: 'Tecnologia & Inovação' },
+      eventsHost: { name: 'UCB, SECTI-DF, JBS, Cargill, Agrit...' },
+      paymentEventType: 'unpaid',
+      cancelled: false,
+      strippedDetail: 'Evento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.vento de Startup de tecnologia com foco em sustentabilidade, inovação e agricultura. Com apresentação de 16 startups que desenvolveram soluções para o agronegócio sustentável, com palestras, workshops e rodada de investimento.',
+      eventsAddress: {
+        city: 'Brasília',
+        state: 'DF',
+        country: 'Brasil'
+      }
     },
     ...Array.from({ length: 500 }, (_, i) => ({
-      id: 4 + i,
-      titulo: `Evento Exemplo ${4 + i}`,
-      status: ['Em andamento', 'Agendado', 'Encerrado'][(i + 1) % 3],
-      organizador: 'Organizador Exemplo',
-      horario: '10h às 17h',
-      dataInicio: '01/12/2025',
-      dataFim: '01/12/2025',
-      local: 'Local Exemplo',
-      endereco: 'Endereço Exemplo, Cidade, UF',
-      descricao: 'Descrição resumida do evento de exemplo para preencher a lista.',
-      link: '#',
-    })),
+      id: 2 + i,
+      name: `Evento Exemplo ${2 + i}`,
+      newUrl: '#',
+      startDate: `2025-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 28) + 1).padStart(2, '0')}`,
+      endDate: `2025-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 28) + 1).padStart(2, '0')}`,
+      eventsCategory: { name: ['Tecnologia', 'Negócios', 'Educação'][i % 3] },
+      eventsHost: { name: 'Organizador Exemplo' },
+      paymentEventType: i % 2 === 0 ? 'paid' : 'unpaid',
+      cancelled: i % 10 === 0, // 10% dos eventos cancelados
+      strippedDetail: 'Descrição resumida do evento de exemplo para preencher a lista.',
+      eventsAddress: {
+        city: ['São Paulo', 'Rio de Janeiro', 'Belo Horizonte'][i % 3],
+        state: ['SP', 'RJ', 'MG'][i % 3],
+        country: 'Brasil'
+      }
+    }))
   ], [])
+
+  // Adicionar status aos eventos
+  const eventosComStatus = useMemo(() =>
+    eventos.map(event => ({
+      ...event,
+      status: getStatus(event)
+    })), [eventos]
+  )
+
+  // Função para formatar data
+  const formatarData = (dataISO) => {
+    if (!dataISO) return ''
+    const data = new Date(dataISO)
+    return data.toLocaleDateString('pt-BR')
+  }
 
   // Função para ordenar eventos por status e data
   const ordenarEventos = (eventosArray) => {
@@ -89,26 +95,57 @@ export default function Eventos() {
       }
 
       // Segundo ordena pela data de início
-      const parseData = (str) => {
-        const [dia, mes, ano] = str.split('/')
-        return new Date(ano, mes - 1, dia)
-      }
-
-      const dataA = parseData(a.dataInicio)
-      const dataB = parseData(b.dataInicio)
+      const dataA = new Date(a.startDate)
+      const dataB = new Date(b.startDate)
 
       return ordem === 'Mais antigo' ? dataB - dataA : dataA - dataB
     })
   }
 
-  // Filtros de busca e status
-  const eventosFiltrados = useMemo(() => {
-    return eventos.filter(
-      (ev) =>
-        (filtroStatus === 'Todos' || ev.status === filtroStatus) &&
-        ev.titulo.toLowerCase().includes(busca.toLowerCase())
-    )
-  }, [eventos, filtroStatus, busca])
+// Função para normalizar texto (remover acentos e converter para minúsculo)
+const normalizarTexto = (texto) => {
+  if (!texto) return ''
+  return texto
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+    .replace(/[ç]/g, 'c') // Converte ç para c
+}
+
+// Filtros de busca e status
+const eventosFiltrados = useMemo(() => {
+  return eventosComStatus.filter((event) => {
+    // Filtro por busca no título
+    const buscaMatch = normalizarTexto(event.name).includes(normalizarTexto(busca))
+    
+    // Filtro por status
+    const statusMatch = filtroStatus === 'Todos' || event.status === filtroStatus
+    
+    // Filtros avançados
+    const dataEspecificaMatch = !filtrosAvancados.dataEspecifica || 
+      (formatarData(event.startDate) === formatarData(filtrosAvancados.dataEspecifica) ||
+       formatarData(event.endDate) === formatarData(filtrosAvancados.dataEspecifica))
+    
+    const dataPeriodoMatch = !filtrosAvancados.dataInicio || !filtrosAvancados.dataFim || 
+      (new Date(event.startDate) >= new Date(filtrosAvancados.dataInicio) &&
+       new Date(event.endDate) <= new Date(filtrosAvancados.dataFim))
+    
+    const cidadeMatch = !filtrosAvancados.cidade || 
+      normalizarTexto(event.eventsAddress?.city).includes(normalizarTexto(filtrosAvancados.cidade))
+    
+    const estadoMatch = !filtrosAvancados.estado || 
+      normalizarTexto(event.eventsAddress?.state).includes(normalizarTexto(filtrosAvancados.estado))
+    
+    const paisMatch = !filtrosAvancados.pais || 
+      normalizarTexto(event.eventsAddress?.country).includes(normalizarTexto(filtrosAvancados.pais))
+    
+    const pagamentoMatch = filtrosAvancados.tipoPagamento === 'Todos' || 
+      event.paymentEventType === filtrosAvancados.tipoPagamento
+
+    return buscaMatch && statusMatch && dataEspecificaMatch && dataPeriodoMatch && 
+           cidadeMatch && estadoMatch && paisMatch && pagamentoMatch
+  })
+}, [eventosComStatus, filtroStatus, busca, filtrosAvancados])
 
   // Paginação
   const eventosFiltradosOrdenados = ordenarEventos(eventosFiltrados)
@@ -154,121 +191,345 @@ export default function Eventos() {
     }
   }
 
+  const limparFiltrosAvancados = () => {
+    setFiltrosAvancados({
+      dataEspecifica: '',
+      dataInicio: '',
+      dataFim: '',
+      cidade: '',
+      estado: '',
+      pais: '',
+      tipoPagamento: 'Todos'
+    })
+  }
+
+  // Função para adicionar ao Google Agenda (exemplo)
+  const adicionarAoGoogleAgenda = () => {
+    const eventosParaAgenda = currentEvents.slice(0, 5) // Limite do Google Agenda
+    alert(`Adicionando ${eventosParaAgenda.length} eventos ao Google Agenda...`)
+    // Aqui você implementaria a lógica real de integração com o Google Agenda
+  }
+
   return (
     <div className="eventos-wrapper">
 
       {/* Filtros */}
       <div className="filtros-container">
-        <input
-          type="text"
-          placeholder="Pesquise o nome do evento..."
-          value={busca}
-          onChange={(e) => {
-            setBusca(e.target.value)
-            setCurrentPage(1)
-          }}
-        />
-        <select
-          value={filtroStatus}
-          onChange={(e) => {
-            setFiltroStatus(e.target.value)
-            setCurrentPage(1)
-          }}
-        >
-          <option value="Todos">Todos</option>
-          <option value="Em andamento">Em andamento</option>
-          <option value="Agendado">Agendado</option>
-          <option value="Encerrado">Encerrado</option>
-        </select>
-        <select
-          value={ordem}
-          onChange={(e) => {
-            setOrdem(e.target.value)
-            setCurrentPage(1)
-          }}
-        >
-          <option value="Mais recente">Mais recente → Mais antigo</option>
-          <option value="Mais antigo">Mais antigo → Mais recente</option>
-        </select>
-      </div>
-
-      {/* Cards */}
-      <div className="eventos-container">
-        {currentEvents.map((ev) => (
-          <div key={ev.id} className="evento-card">
-            <h2>{ev.titulo}</h2>
-            <button className={`status-btn ${getStatusClass(ev.status)}`}>{ev.status}</button>
-            <p className="organizador"><strong>Organizador(es):</strong> {ev.organizador}</p>
-            <br />
-            <p className="horario"><strong>Horário:</strong> {ev.horario}</p>
-            <p className="data">
-              <strong>Data:</strong>{' '}
-              {ev.dataFim && ev.dataInicio !== ev.dataFim
-                ? `${ev.dataInicio} até ${ev.dataFim}`
-                : ev.dataInicio}
-            </p>
-            <br />
-            <p className="local"><strong>Local:</strong> {ev.local}</p>
-            <p className="endereco"><strong>Endereço:</strong> {ev.endereco}</p>
-            <br />
-            <p className="descricao"><strong>Descrição:</strong> {ev.descricao}</p>
-            <br />
-            <p>
-              <strong>Link para inscrição:</strong>{' '}
-              <a href={ev.link} target="_blank" rel="noopener noreferrer">CLIQUE AQUI</a>
-            </p>
-            <button className="ler-mais-btn" onClick={() => abrirPopup(ev)}>Ler mais</button>
-          </div>
-        ))}
-      </div>
-
-      {/* Paginação */}
-      {totalPages > 1 && (
-        <div className="pagination">
+        <div className="busca-container">
+          <input
+            type="text"
+            placeholder="Pesquise o nome do evento..."
+            value={busca}
+            onChange={(e) => {
+              setBusca(e.target.value)
+              setCurrentPage(1)
+            }}
+          />
           <button
-            className="page-btn"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >Anterior</button>
-
-          {getPageNumbers().map((p, idx) =>
-            p === '...' ? <span key={`dots-${idx}`} className="dots">...</span> :
-              <button
-                key={p}
-                className={`page-btn ${currentPage === p ? 'active' : ''}`}
-                onClick={() => handlePageChange(p)}
-              >{p}</button>
-          )}
-
-          <button
-            className="page-btn"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >Próximo</button>
+            className={`filtro-icon ${mostrarFiltrosAvancados ? 'ativo' : ''}`}
+            onClick={() => setMostrarFiltrosAvancados(!mostrarFiltrosAvancados)}
+          >
+            <span className="material-symbols-outlined">
+              filter_alt
+            </span>
+          </button>
         </div>
+      </div>
+
+      {/* Filtros Avançados */}
+      {mostrarFiltrosAvancados && (
+        <div className="filtros-avancados">
+          <div className="filtros-grid">
+
+            <div className="filtro-group">
+              <label>Status:</label>
+              <select
+                value={filtroStatus}
+                onChange={(e) => {
+                  setFiltroStatus(e.target.value)
+                  setCurrentPage(1)
+                }}
+              >
+                <option value="Todos">Todos</option>
+                <option value="Em andamento">Em andamento</option>
+                <option value="Agendado">Agendado</option>
+                <option value="Encerrado">Encerrado</option>
+              </select>
+            </div>
+
+            <div className="filtro-group">
+              <label>Ordenar por:</label>
+              <select
+                value={ordem}
+                onChange={(e) => {
+                  setOrdem(e.target.value)
+                  setCurrentPage(1)
+                }}
+              >
+                <option value="Mais recente">Mais recente → Mais antigo</option>
+                <option value="Mais antigo">Mais antigo → Mais recente</option>
+              </select>
+            </div>
+
+            <div className="filtro-group">
+              <label>Data específica:</label>
+              <input
+                type="date"
+                value={filtrosAvancados.dataEspecifica}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({
+                    ...prev,
+                    dataEspecifica: e.target.value,
+                    dataInicio: '', // Limpa período quando seleciona data específica
+                    dataFim: ''
+                  }))
+                  setCurrentPage(1)
+                }}
+              />
+            </div>
+
+            <div className="filtro-group">
+              <label>Período - Início:</label>
+              <input
+                type="date"
+                value={filtrosAvancados.dataInicio}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({
+                    ...prev,
+                    dataInicio: e.target.value,
+                    dataEspecifica: '' // Limpa data específica quando seleciona período
+                  }))
+                  setCurrentPage(1)
+                }}
+              />
+            </div>
+
+            <div className="filtro-group">
+              <label>Período - Fim:</label>
+              <input
+                type="date"
+                value={filtrosAvancados.dataFim}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({
+                    ...prev,
+                    dataFim: e.target.value,
+                    dataEspecifica: '' // Limpa data específica quando seleciona período
+                  }))
+                  setCurrentPage(1)
+                }}
+              />
+            </div>
+
+            <div className="filtro-group">
+              <label>Cidade:</label>
+              <input
+                type="text"
+                placeholder="Filtrar por cidade..."
+                value={filtrosAvancados.cidade}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({ ...prev, cidade: e.target.value }))
+                  setCurrentPage(1)
+                }}
+              />
+            </div>
+
+            <div className="filtro-group">
+              <label>Estado:</label>
+              <input
+                type="text"
+                placeholder="Filtrar por estado..."
+                value={filtrosAvancados.estado}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({ ...prev, estado: e.target.value }))
+                  setCurrentPage(1)
+                }}
+              />
+            </div>
+
+            <div className="filtro-group">
+              <label>País:</label>
+              <input
+                type="text"
+                placeholder="Filtrar por país..."
+                value={filtrosAvancados.pais}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({ ...prev, pais: e.target.value }))
+                  setCurrentPage(1)
+                }}
+              />
+            </div>
+
+            <div className="filtro-group">
+              <label>Tipo de Pagamento:</label>
+              <select
+                value={filtrosAvancados.tipoPagamento}
+                onChange={(e) => {
+                  setFiltrosAvancados(prev => ({ ...prev, tipoPagamento: e.target.value }))
+                  setCurrentPage(1)
+                }}
+              >
+                <option value="Todos">Todos</option>
+                <option value="paid">Pago</option>
+                <option value="unpaid">Gratuito</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Botão Adicionar ao Google Agenda */}
+          <div className="acoes-filtros">
+            <button
+              onClick={adicionarAoGoogleAgenda}
+              className="botao-google-agenda"
+            >
+              Adicionar ao Google Agenda ({Math.min(currentEvents.length, 5)} eventos)
+            </button>
+
+            <button
+              onClick={limparFiltrosAvancados}
+              className="botao-limpar-filtros"
+            >
+              Limpar Filtros
+            </button>
+          </div>
+
+          {/* Informação sobre limite do Google Agenda */}
+          <div className="info-limite">
+            * O Google Agenda permite adicionar até 5 eventos por vez
+          </div>
+        </div>
+      )}
+
+      {/* Contagem de resultados e mensagem */}
+      <div className="resultados-info">
+        {eventosFiltradosOrdenados.length === 0 ? (
+          <div className="nenhum-evento">
+            <h3>Nenhum evento encontrado</h3>
+            <p>Tente ajustar os filtros ou termos de busca</p>
+          </div>
+        ) : (
+          <p className="contagem-resultados">
+            {eventosFiltradosOrdenados.length} evento{eventosFiltradosOrdenados.length !== 1 ? 's' : ''} encontrado{eventosFiltradosOrdenados.length !== 1 ? 's' : ''}
+          </p>
+        )}
+      </div>
+
+      {/* Cards - só mostra se houver resultados */}
+      {eventosFiltradosOrdenados.length > 0 && (
+        <>
+          <div className="eventos-container">
+            {currentEvents.map((event) => (
+              <div key={event.id} className="evento-card">
+                <h2>{event.name}</h2>
+                <button className={`status-btn ${getStatusClass(event.status)}`}>{event.status}</button>
+
+                <p className="data">
+                  <strong>Data:</strong>{' '}
+                  {event.endDate && event.startDate !== event.endDate
+                    ? `${formatarData(event.startDate)} até ${formatarData(event.endDate)}`
+                    : formatarData(event.startDate)}
+                </p>
+
+                <p className="tipo-pagamento">
+                  <strong>Tipo:</strong> {event.paymentEventType === 'paid' ? 'Pago' : 'Gratuito'}
+                </p>
+
+                <p className="local">
+                  <strong>Local:</strong> {event.eventsAddress ?
+                    `${event.eventsAddress.city || ''}${event.eventsAddress.state ? ', ' + event.eventsAddress.state : ''}${event.eventsAddress.country ? ', ' + event.eventsAddress.country : ''}`
+                    : 'Local não informado'}
+                </p>
+
+                <p className="descricao">
+                  <strong>Descrição:</strong> {event.strippedDetail}
+                </p>
+
+                <p>
+                  <strong>Link para inscrição:</strong>{' '}
+                  <a href={event.newUrl} target="_blank" rel="noopener noreferrer">CLIQUE AQUI</a>
+                </p>
+
+                <button className="ler-mais-btn" onClick={() => abrirPopup(event)}>Ler mais</button>
+              </div>
+            ))}
+          </div>
+
+          {/* Paginação - só mostra se houver resultados */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                className="page-btn"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >Anterior</button>
+
+              {getPageNumbers().map((p, idx) =>
+                p === '...' ? <span key={`dots-${idx}`} className="dots">...</span> :
+                  <button
+                    key={p}
+                    className={`page-btn ${currentPage === p ? 'active' : ''}`}
+                    onClick={() => handlePageChange(p)}
+                  >{p}</button>
+              )}
+
+              <button
+                className="page-btn"
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >Próximo</button>
+            </div>
+          )}
+        </>
       )}
 
       {/* Popup */}
       {eventoSelecionado && (
         <div className="popup-overlay" onClick={fecharPopup}>
           <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-            <h2>{eventoSelecionado.titulo}</h2>
-            <p><strong>Status:</strong> {eventoSelecionado.status}</p>
-            <p><strong>Organizador:</strong> {eventoSelecionado.organizador}</p>
-            <p><strong>Horário:</strong> {eventoSelecionado.horario}</p>
-            <p>
-              <strong>Data:</strong>{' '}
-              {eventoSelecionado.dataFim && eventoSelecionado.dataInicio !== eventoSelecionado.dataFim
-                ? `${eventoSelecionado.dataInicio} até ${eventoSelecionado.dataFim}`
-                : eventoSelecionado.dataInicio}
-            </p>
-            <p><strong>Local:</strong> {eventoSelecionado.local}</p>
-            <p><strong>Endereço:</strong> {eventoSelecionado.endereco}</p>
-            <p><strong>Descrição:</strong> {eventoSelecionado.descricao}</p>
-            <p>
-              <strong>Link:</strong>{' '}
-              <a href={eventoSelecionado.link} target="_blank" rel="noopener noreferrer">{eventoSelecionado.link}</a>
-            </p>
+            <h2>{eventoSelecionado.name}</h2>
+
+            <div className="popup-body">
+              {eventoSelecionado.cancelled && (
+                <div style={{
+                  backgroundColor: '#ffebee',
+                  color: '#c62828',
+                  padding: '0.5rem',
+                  borderRadius: '4px',
+                  marginBottom: '1rem',
+                  fontWeight: 'bold'
+                }}>
+                  ⚠️ EVENTO CANCELADO
+                </div>
+              )}
+
+              <p><strong>Status:</strong> {eventoSelecionado.status}</p>
+
+              <p>
+                <strong>Data:</strong>{' '}
+                {eventoSelecionado.endDate && eventoSelecionado.startDate !== eventoSelecionado.endDate
+                  ? `${formatarData(eventoSelecionado.startDate)} até ${formatarData(eventoSelecionado.endDate)}`
+                  : formatarData(eventoSelecionado.startDate)}
+              </p>
+
+              <p><strong>Categoria:</strong> {eventoSelecionado.eventsCategory?.name || 'Não informada'}</p>
+
+              <p><strong>Organizador:</strong> {eventoSelecionado.eventsHost?.name || 'Não informado'}</p>
+
+              <p><strong>Tipo de Pagamento:</strong> {eventoSelecionado.paymentEventType === 'paid' ? 'Pago' : 'Gratuito'}</p>
+
+              <p><strong>Cancelado:</strong> {eventoSelecionado.cancelled ? 'Sim' : 'Não'}</p>
+
+              <p><strong>Local:</strong> {eventoSelecionado.eventsAddress ?
+                `${eventoSelecionado.eventsAddress.city || ''}${eventoSelecionado.eventsAddress.state ? ', ' + eventoSelecionado.eventsAddress.state : ''}${eventoSelecionado.eventsAddress.country ? ', ' + eventoSelecionado.eventsAddress.country : ''}`
+                : 'Local não informado'}</p>
+
+              <p><strong>Descrição:</strong> {eventoSelecionado.strippedDetail}</p>
+
+              <p>
+                <strong>Link para inscrição:</strong>{' '}
+                <a href={eventoSelecionado.newUrl} target="_blank" rel="noopener noreferrer">{eventoSelecionado.newUrl}</a>
+              </p>
+            </div>
+
             <button className="fechar-btn" onClick={fecharPopup}>Fechar</button>
           </div>
         </div>
