@@ -1,19 +1,21 @@
 import mongoose from "mongoose";
 
 const eventSchema = new mongoose.Schema({
-    titulo: String,
-    dataInicio: Date,
-    dataFim: Date,
-    descricao: String,
-    categoria: String,
-    tipo: String,
-    organizador: String,
-    imagem: String,
-    url: String,
-    local: {
-        estado: String,
-        cidade: String,
-    },
-});
+  id: Number,
+  cancelled: Boolean,
+  startDate: Date,
+  endDate: Date,
+  name: String,
+  strippedDetail: String,
+  eventsCategory: String,
+  eventsHost: String,
+  newUrl: String,
+  paymentEventType: String,
+  eventsAddress: {
+    city: String,
+    state: String,
+    country: String,
+  },
+}, { collection: "events" }); 
 
 export default mongoose.model("Event", eventSchema);

@@ -6,7 +6,7 @@ dotenv.config();
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI, {
-            dbName: "brasil_startups", // nome do banco, personalize aqui
+            dbName: "sympla_db", // nome do banco, personalize aqui
         });
         console.log("✅ Conectado ao MongoDB com sucesso!");
     } catch (error) {
