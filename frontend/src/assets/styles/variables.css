@@ -7,4 +7,29 @@
   --cor-cinza-escuro: #555555;
   --cor-azul: #007bff;
   --cor-azul-escuro: #2F4858;
+
+
+  /* Cores para gráficos de pizza */
+  --cor-slice-0: #007bff;
+  --cor-slice-1: #28a745;
+  --cor-slice-2: #dc3545;
+  --cor-slice-3: #ffc107;
+  --cor-slice-4: #6f42c1;
+  --cor-slice-5: #e83e8c;
+  --cor-slice-6: #fd7e14;
+  --cor-slice-7: #20c997;
+
+
+  --primary-color: #007bff;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --dark-color: #2c3e50;
+  --gray-color: #6c757d;
+  --light-gray: #f8f9fa;
+  --white: #ffffff;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+  --border-radius: 16px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
