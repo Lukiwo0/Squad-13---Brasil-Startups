@@ -17,7 +17,11 @@ const Metricas = () => {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
 
-  // Buscar dados da API
+  // 🔹 Filtro de região (apenas para o gráfico)
+  const [regiaoSelecionada, setRegiaoSelecionada] = useState('');
+  const [dadosGraficoRegiao, setDadosGraficoRegiao] = useState(null);
+
+  // Busca inicial de tudo (sem filtro)
   useEffect(() => {
     const buscarMetricas = async () => {
       try {
@@ -52,6 +56,23 @@ const Metricas = () => {
 
     buscarMetricas();
   }, []);
+
+  // 🔹 Buscar apenas dados filtrados do gráfico por região
+  useEffect(() => {
+    const buscarGraficoPorRegiao = async () => {
+      try {
+        const query = regiaoSelecionada ? `?regiao=${regiaoSelecionada}` : '';
+        const resposta = await fetch(`http://localhost:3000/metricas/dados-gerais${query}`);
+        if (!resposta.ok) throw new Error('Erro ao buscar gráfico filtrado');
+        const dados = await resposta.json();
+        setDadosGraficoRegiao(dados.eventosPorMes); // Só o gráfico
+      } catch (err) {
+        console.error('Erro ao carregar gráfico por região:', err);
+      }
+    };
+
+    buscarGraficoPorRegiao();
+  }, [regiaoSelecionada]);
 
   const metricasData = formatarDadosMetricas(dadosGerais, analises, relatorios);
 
@@ -102,6 +123,23 @@ const Metricas = () => {
         <p>Métricas e insights baseados nos dados reais do sistema</p>
 
         <div className="header-actions-center">
+          {/* 🔹 Filtro de região que atualiza só o gráfico */}
+          <div className="filtro-regiao">
+            <label htmlFor="regiao">Filtrar gráfico por região:</label>
+            <select
+              id="regiao"
+              value={regiaoSelecionada}
+              onChange={(e) => setRegiaoSelecionada(e.target.value)}
+            >
+              <option value="">Todas</option>
+              <option value="Norte">Norte</option>
+              <option value="Nordeste">Nordeste</option>
+              <option value="Centro-Oeste">Centro-Oeste</option>
+              <option value="Sudeste">Sudeste</option>
+              <option value="Sul">Sul</option>
+            </select>
+          </div>
+
           <button className="btn-exportar" onClick={handleExportPDF}>
             📄 Baixar Relatório em PDF
           </button>
@@ -109,7 +147,13 @@ const Metricas = () => {
       </div>
 
       <MetricasCards metricasData={metricasData} dadosGerais={dadosGerais} />
-      <DashboardGraficos dadosGraficos={metricasData.dadosGraficos} eventosPorMes={dadosGerais?.eventosPorMes}/>
+
+      {/* 🔹 Aqui o gráfico usa os dados filtrados, se houver */}
+      <DashboardGraficos
+        dadosGraficos={metricasData.dadosGraficos}
+        eventosPorMes={dadosGraficoRegiao || dadosGerais?.eventosPorMes}
+      />
+
       <AnalisesDetalhadas metricasData={metricasData} dadosGerais={dadosGerais} />
       <RelatoriosInvestidores metricasData={metricasData} dadosGerais={dadosGerais} />
     </div>
