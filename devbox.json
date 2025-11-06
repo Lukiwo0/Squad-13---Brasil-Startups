@@ -1,0 +1,22 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
+  "packages": [
+    "docker-compose@2.39.1",
+    "docker@latest",
+    "nodejs@24.11.0",
+    "podman@latest"
+  ],
+  "env": {
+    "DEVBOX_COREPACK_ENABLED":"1"
+  },
+  "shell": {
+    "init_hook": [
+      "echo 'Welcome to devbox!' > /dev/null"
+    ],
+    "scripts": {
+      "test": [
+        "echo \"Error: no test specified\" && exit 1"
+      ]
+    }
+  }
+}
