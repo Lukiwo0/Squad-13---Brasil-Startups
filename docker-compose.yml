@@ -1,4 +1,13 @@
 services:
+  scraper:
+    build: ./backend/web-scraping
+    container_name: sympla-scraper
+    restart: unless-stopped
+    env_file:
+      - ./backend/web-scraping/.env
+    networks:
+      - app-network
+
   backend:
     build: ./backend/api
     container_name: sympla-backend
