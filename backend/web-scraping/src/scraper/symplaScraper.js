@@ -100,7 +100,13 @@ export async function scrapeWithLimit(baseUrl, limitLinks, limitPages) {
   const links = await getEventLinks(baseUrl, limitLinks, limitPages)
   const events = []
 
+  console.log('\n')
+  console.log('⚠️ LIMITE DE LINK(S) que o scraper irá coletar:', limitLinks)
+  console.log('⚠️ LIMITE DE PÁGINA(S) que o scraper irá coletar:', limitPages)
+  console.log('\n')
+
   console.log('🔗 Links coletados:', links)
+  console.log('\n')
 
   for (const [index, link] of links.entries()) {
     try {

@@ -19,7 +19,7 @@ async function scrapeSympla() {
   const db = await connectDB()
 
   try {
-    const limitLinks = 20
+    const limitLinks = 4000
     const limitPages = 100
 
     const startTime = Date.now()
@@ -65,7 +65,7 @@ async function scrapeSympla() {
 scrapeSympla()
 
 // Agenda pra rodar todo dia 
-const scheduleScraper = '56 22 * * *'
+const scheduleScraper = '58 8 * * *'
 
 cron.schedule(scheduleScraper, () => {
   const [minuto, hora] = scheduleScraper.split(' ')
