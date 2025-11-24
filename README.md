@@ -134,7 +134,7 @@ Backend (API):
 ```bash
 cd backend/api
 npm install
-npm start
+node src/index.js
 ```
 
 Web-scraping:
@@ -142,7 +142,7 @@ Web-scraping:
 ```bash
 cd backend/web-scraping
 npm install
-npm start
+node src/index.js
 ```
 
 Frontend:
